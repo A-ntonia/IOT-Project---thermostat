@@ -11,7 +11,11 @@ int redLED=8; //tells red LED is connected to 12
 int redOnTime=1000; //tells how long red LED on for
 int redOffTime=200; //tells how long red LED off
 int numRedBlinks=5;
-int tooHigh=30; //temp will light LED
+int tooHigh=18; //temp will light LED
+
+int buzzer =7; 
+
+int tooLow=10; //buzzer will work
 
 void setup(){
   Serial.begin(9600);
@@ -22,7 +26,8 @@ void setup(){
   delay(2000);
   
    pinMode(redLED,OUTPUT);
-
+   
+   pinMode(buzzer,OUTPUT);
 }
 
 void loop()
@@ -50,4 +55,13 @@ void loop()
   else{
     digitalWrite(redLED,LOW); //if temp not tooHigh then LED not come on
   }
+  if(DHT.temperature<=tooLow){
+    digitalWrite(buzzer,HIGH);
+    delay(2000);
+    digitalWrite(buzzer,LOW);
+    delay(1000);
+}
+else{
+  digitalWrite(buzzer,LOW);
+}
 }
