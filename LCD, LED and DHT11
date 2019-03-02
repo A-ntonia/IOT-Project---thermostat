@@ -10,15 +10,19 @@ int tdDelay=8000; //humidity delay
 int redLED=8; //tells red LED is connected to 12
 int redOnTime=1000; //tells how long red LED on for
 int redOffTime=200; //tells how long red LED off
+int numRedBlinks=5;
+int tooHigh=30; //temp will light LED
 
 void setup(){
   Serial.begin(9600);
+  
   lcd.begin(16,2); //size of lcd
   lcd.setCursor(5,0); //where hello will appear
   lcd.print("Hello!"); 
   delay(2000);
   
    pinMode(redLED,OUTPUT);
+
 }
 
 void loop()
@@ -36,6 +40,14 @@ void loop()
   lcd.print("Humidity: "); lcd.print((int)DHT.humidity); lcd.print(" %"); //displays string and humidity
   delay(tdDelay); //wait
   lcd.clear(); //clears display for next loop
-
   
+   if(DHT.temperature>=tooHigh)  {
+    digitalWrite(redLED, HIGH); //turns red LED on
+    delay(redOnTime); //wait
+    digitalWrite(redLED,LOW); //turns red LED off
+    delay(redOffTime); //wait
+  }
+  else{
+    digitalWrite(redLED,LOW); //if temp not tooHigh then LED not come on
+  }
 }
